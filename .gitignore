@@ -1,0 +1,12 @@
+# virtual environment
+venv/
+
+# project files
+temp/
+testing/
+output/
+test.py
+
+# python
+__pycache__/
+*.pyc
