@@ -13,6 +13,8 @@ dependencies = [
 [tool.poetry]
 packages = [{include = "m4b_converter", from = "src"}]
 
+[tool.poetry.scripts]
+m4b-converter = "m4b_converter.cli.main:main"
 
 [build-system]
 requires = ["poetry-core>=2.0.0,<3.0.0"]

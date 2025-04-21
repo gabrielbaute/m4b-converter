@@ -5,7 +5,7 @@ from rich.markdown import Markdown
 
 from cli.parser import generate_parser
 from cli.utils import parse_metadata, get_audio_duration, time_str_to_seconds, total_duration
-from m4b_converter import M4bConverter
+from m4b_converter.core import M4bConverter
 
 console = Console()
 

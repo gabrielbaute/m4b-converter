@@ -6,6 +6,7 @@ temp/
 testing/
 output/
 test.py
+.m4b
 
 # python
 __pycache__/
