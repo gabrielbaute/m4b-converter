@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "m4b-converter"
-version = "0.1.0"
+version = "0.2.1"
 description = "Herramienta para convertir audios a M4B con metadatos y capítulos"
 authors = ["Gabriel Baute <gabrielbaute@gmail.com>"]
 license = "MIT"

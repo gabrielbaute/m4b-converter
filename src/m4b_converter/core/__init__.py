@@ -1,1 +1,1 @@
-from core.m4b import M4bConverter
+from m4b_converter.core.m4b import M4bConverter
