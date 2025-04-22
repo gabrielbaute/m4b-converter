@@ -13,42 +13,50 @@ console = Console()
 
 
 def main():
-
     parser = generate_parser()
     args = parser.parse_args()
 
+    # Manejar --version primero
     if args.version:
         show_version()
         sys.exit(0)
 
-    # Mostrar ayuda con estilo
-    if not args.input:
+    # Si no se especifica comando, mostrar ayuda
+    if not hasattr(args, "command"):
         console.print(Markdown("## 🚀 Uso básico:"))
         parser.print_help()
         return
 
-    # Procesar metadatos
-    metadata = parse_metadata(args.metadata)
+    # Procesar metadatos (si existen)
+    metadata = parse_metadata(args.metadata) if args.metadata else None
+
     # Obtiene la duración en segundos del archivo
     duration = get_audio_duration(args.input)
     total_file_duration = total_duration(args.input)
-    
-    # Inicializar conversor
+
+    # Inicializar conversor común
     converter = M4bConverter(
         input_path=args.input,
         output_dir=args.output_dir,
         temp_dir=args.temp_dir,
         metadata=metadata
     )
-    
-    # Barra de progreso con Rich
+
+    # Barra de progreso común
     def progress_callback(time_str: str):
         """Actualiza la barra de progreso con el tiempo procesado."""
-        progress.update(task, advance=1, description=f"⏳ [bold green]{time_str}[/bold]")
-    
-    # Convertir con Rich
+        current_sec = time_str_to_seconds(time_str)
+        desc = f"⏳ [bold green]{time_str}[/bold green]" if args.command == "convert" else f"⚡ [bold yellow]{time_str}[/bold yellow]"
+        progress.update(task, completed=current_sec, description=desc)
+
+    # Configurar barra según el comando
+    progress_title = {
+        "convert": "[cyan bold blink]Convirtiendo...[/cyan bold blink]",
+        "optimize": "[yellow bold blink]Optimizando...[/yellow bold blink]"
+    }
+
     with Progress(
-        TextColumn("[cyan bold blink]Convirtiendo... [/cyan bold blink]"),
+        TextColumn(progress_title[args.command]),
         TextColumn("|"),
         TextColumn("[progress.description]{task.description}"),
         TextColumn("|"),
@@ -56,29 +64,32 @@ def main():
         "[progress.percentage]{task.percentage:>3.0f}%",
         TimeElapsedColumn(),
         TextColumn("•"),
-        TextColumn(f"[bold green]Duración total del archivo[/bold green]: [bold bright_blue]{total_file_duration}[/bold bright_blue]"),
+        TextColumn(f"[bold green]Duración total[/bold green]: [bold bright_blue]{total_file_duration}[/bold bright_blue]"),
         console=console
     ) as progress:
-        task = progress.add_task("[cyan bold]Iniciando... [/cyan bold]", total=duration)
-        
-        def progress_callback(time_str: str):
-            """Actualiza la barra con el tiempo real procesado."""
-            current_sec = time_str_to_seconds(time_str)
-            if current_sec is not None:
-                progress.update(task, completed=current_sec, description=f"[bold bright_blue]Tiempo convertido:[/bold bright_blue] [bold green]{time_str}[/bold green]")
-        
+        duration = get_audio_duration(args.input)
+        task = progress.add_task("[cyan bold]Iniciando...[/cyan bold]", total=duration)
+
         try:
-            converter.convert_to_m4b(
-                bitrate=args.bitrate,
-                channels=args.channels,
-                threads=args.threads,
-                progress_callback=progress_callback,
-                remove_temp=not args.keep_temp
-            )
+            if args.command == "convert":
+                converter.convert_to_m4b(
+                    bitrate=args.bitrate,
+                    channels=args.channels,
+                    threads=args.threads,
+                    progress_callback=progress_callback,
+                    remove_temp=not args.keep_temp
+                )
+            elif args.command == "optimize":
+                converter.optimize_m4b(
+                    bitrate=args.bitrate,
+                    channels=args.channels,
+                    threads=args.threads,
+                    progress_callback=progress_callback,
+                    remove_temp=not args.keep_temp
+                )
+
             progress.console.print(f"[green]✅ Listo! Archivo guardado en: [bold]{converter.output_path}")
+
         except Exception as e:
             progress.console.print(f"[red]❌ Error: {e}")
             raise
-
-if __name__ == "__main__":
-    main()
