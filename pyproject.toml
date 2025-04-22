@@ -18,6 +18,9 @@ black = "^23.0"
 [tool.poetry.scripts]
 m4b-converter = "m4b_converter.cli.main:main"
 
+[tool.poetry.group.dev.dependencies]
+bumpver = "^2024.1130"
+
 [build-system]
 requires = ["poetry-core>=2.0.0"]
 build-backend = "poetry.core.masonry.api"
