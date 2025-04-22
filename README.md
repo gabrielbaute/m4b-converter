@@ -1,91 +1,64 @@
 # 📖 m4b-converter
 
-**Herramienta CLI para convertir audios a formato M4B** con metadatos personalizados, capítulos y optimización de bitrate.  
-Perfecto para audiolibros, podcasts o archivos de voz.
-
 [![Python](https://img.shields.io/badge/Python-3.12%2B-blue)](https://www.python.org/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green)](https://opensource.org/licenses/MIT)
 [![Code style: Black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 
+**Herramienta CLI para convertir y optimizar audios a M4B**  
+✨ Conversiones con metadatos ✨ Optimización de bitrate ✨ Capítulos con marcas de tiempo
+
+Este prouecto surgió como consecuencia de que, cuando suelo buscar audiolibros, tiendo a encontrarlos en mp3, y la mayoría de los conversores que he encontrado (incluso el que viene incluído dentro de #AudiobookShelf) suelen deformarme mucho el audio o tiendo a perder calidad en él. El formato m4b es el estándar definido para audiolibros (aunque pueda usarse .m4a, que en esencia es casi idéntico, la convención es tratar las pistas de música en m4a y de audiolibros en m4b). Ciertamente, un formato m4b es mucho más eficiente y cuidadoso con mi poco espacio en disco que el mp3, y por eso decidí emprender este proyecto.
+
+Además de los comandos mencionados, se incluyeron opciones como seleccionar cuántos núcleos del procesador se deben emplear durante una conversión (por defecto es 1). **Ffmepeg es requerido**, así que debes tenerlo previamente instalado en tu equipo.
+
+Este proyecto está inspirado, naturalmente, en audiobookshelf, una aplicación de la que soy fan y  que uso de manera asidua.
+
 ## 🚀 Características
+- ✅ **Conversión** a M4B desde MP3, WAV, FLAC, etc.
+- 🔄 **Optimización** de archivos M4B existentes (bitrate/canales).
+- 📝 **Metadatos personalizados** (título, autor, género).
+- ⏱️ **Capítulos** desde archivos de texto (próximamente).
+- 📊 **Barra de progreso** interactiva con `rich`.
 
-- ✅ Conversión a M4B desde MP3, WAV, M4A, etc.
-- 📝 Metadatos personalizados (título, autor, género).
-- ⏱️ Soporte para capítulos con marcas de tiempo.
-- 🎚️ Optimización de bitrate (64kbps recomendado para voz).
-- 📊 Barra de progreso con `rich`.
-- 🔄 Uso de directorios temporales para seguridad.
+### Características futuras
+Algunas de las características que planeo incluir más adelante:
+- Convertir de m4b a mp3 en caso de que el usuario lo desee.
+- Incorporar metadata de marcas de tiempo de los capítulos
+- Generar un .json con la metadata del audiolibro en formato de #Audiobookshelf
+- Unificar varios archivos mp3 en uno solo y convertir dicho archivo a m4b (si el usuario lo requiere)
 
-## 📦 Instalación
-
-1. **Requisitos**:  
-   - Python 3.12+
-   - [Poetry](https://python-poetry.org/) (recomendado) o `pip`
-
-2. **Instalar con Poetry**:
-   ```bash
-   git clone https://github.com/gabrielbaute/m4b-converter.git
-   cd m4b-converter
-   poetry install
-   ```
-
-3. **Instalar con pip** (alternativa):
-   ```bash
-   pip install m4b-converter
-   ```
-
-## 🛠 Uso Básico
-
-### Conversión simple:
+## 💾 Instalación
 ```bash
-m4b-converter "audio.mp3" --bitrate 64k --metadata "title=Mi Audiolibro,author=Autor"
+git clone https://github.com/gabrielbaute/m4b-converter.git
+cd m4b-converter
+poetry install  # o pip install .
 ```
 
-### Mostrar versión:
+## 🛠 Uso
+
+### 1. Convertir un archivo a M4B
 ```bash
-m4b-converter --version
-```
-**Salida**:  
-```
-┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
-┃  📦 m4b-converter                      ┃
-┡━━━━━━━━━━━━━━━━━━━━━━┯━━━━━━━━━━━━━━━━━┩
-│  Versión         │ 0.2.1              │
-│  Autor           │ Gabriel Baute      │
-│  Licencia        │ MIT                │
-└──────────────────────┴─────────────────┘
+m4b-converter convert "audio.mp3" \
+    --bitrate 64k \
+    --metadata "title=El Principito,author=Saint-Exupéry"
 ```
 
-### Parámetros avanzados:
-| Argumento          | Descripción                              | Ejemplo                  |
-|--------------------|------------------------------------------|--------------------------|
-| `-o OUTPUT_DIR`    | Directorio de salida (default: `output`) | `-o "mis_audiolibros"`   |
-| `-b BITRATE`       | Bitrate (ej: 64k, 128k)                 | `-b 48k`                 |
-| `-c CHANNELS`      | Canales (1=mono, 2=estéreo)             | `-c 1`                   |
-| `-m METADATA`      | Metadatos en formato `key=value`        | `-m "title=El Principito"` |
-| `--keep-temp`      | Conservar archivos temporales           | `--keep-temp`            |
-
-## 🛠 Desarrollo
-
-### Estructura del proyecto:
-```
-m4b-converter/
-├── src/
-│   └── m4b_converter/
-│       ├── __init__.py
-│       ├── __main__.py
-│       ├── core/          # Lógica de conversión
-│       └── cli/           # Interfaz de comandos
-├── tests/
-├── pyproject.toml
-└── .bumpver.toml          # Config de versionado
-```
-
-
-### Actualizar versión:
+### 2. Optimizar un M4B existente
 ```bash
-poetry run bumpver update --patch  # --minor o --major
+m4b-converter optimize "libro.m4b" \
+    --bitrate 48k \
+    --channels 1 \
+    --metadata "title=Edición Compacta"
 ```
+
+### 📌 Opciones comunes
+| Argumento          | Descripción                              | Valores típicos       |
+|--------------------|------------------------------------------|-----------------------|
+| `-b, --bitrate`    | Calidad de audio (bitrate)               | `64k`, `128k`         |
+| `-c, --channels`   | Canales (`1`=mono, `2`=estéreo)          | `1` (voz), `2` (música)|
+| `-o, --output-dir` | Directorio de salida                     | `./output`            |
+| `-m, --metadata`   | Metadatos en `key=value`                 | `title=Mi Libro`      |
+
 
 ## 📄 Licencia
-MIT © [Gabriel Baute](https://github.com/gabrielbaute)  
+MIT © [Gabriel Baute](https://github.com/gabrielbaute)
