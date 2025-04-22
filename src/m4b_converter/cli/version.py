@@ -1,7 +1,7 @@
 from rich.console import Console
 from rich.table import Table
 
-__version__ = "0.3.0"
+__version__ = "0.3.1"
 
 def show_version():
     """Muestra la versión en una tabla estilo Rich."""
