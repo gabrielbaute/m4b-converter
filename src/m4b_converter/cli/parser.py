@@ -1,4 +1,5 @@
 import argparse
+from m4b_converter.cli.version import __version__
 
 def generate_parser():
     parser = argparse.ArgumentParser(
@@ -7,7 +8,8 @@ def generate_parser():
     )
     
     # Argumentos principales
-    parser.add_argument("input", type=str, help="Ruta del archivo de entrada (MP3, WAV, etc.)")
+    parser.add_argument("-v", "--version", action="store_true", help="Mostrar versión y salir")
+    parser.add_argument("input", nargs="?", type=str, help="Ruta del archivo de entrada (MP3, WAV, etc.)")
     parser.add_argument("-o", "--output-dir", type=str, default="output", help="Directorio de salida")
     parser.add_argument("-t", "--temp-dir", type=str, default="temp", help="Directorio para archivos temporales")
     

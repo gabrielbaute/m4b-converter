@@ -1,3 +1,4 @@
+import sys
 from pathlib import Path
 from rich.console import Console
 from rich.progress import Progress, BarColumn, TimeRemainingColumn, TextColumn, TimeElapsedColumn
@@ -5,6 +6,7 @@ from rich.markdown import Markdown
 
 from m4b_converter.cli.parser import generate_parser
 from m4b_converter.cli.utils import parse_metadata, get_audio_duration, time_str_to_seconds, total_duration
+from m4b_converter.cli.version import show_version, __version__
 from m4b_converter.core import M4bConverter
 
 console = Console()
@@ -14,13 +16,17 @@ def main():
 
     parser = generate_parser()
     args = parser.parse_args()
-    
+
+    if args.version:
+        show_version()
+        sys.exit(0)
+
     # Mostrar ayuda con estilo
     if not args.input:
         console.print(Markdown("## 🚀 Uso básico:"))
         parser.print_help()
         return
-    
+
     # Procesar metadatos
     metadata = parse_metadata(args.metadata)
     # Obtiene la duración en segundos del archivo

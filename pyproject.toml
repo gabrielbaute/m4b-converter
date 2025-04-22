@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "m4b-converter"
-version = "0.2.1"
+version = "0.2.2"
 description = "Herramienta para convertir audios a M4B con metadatos y capítulos"
 authors = ["Gabriel Baute <gabrielbaute@gmail.com>"]
 license = "MIT"
@@ -16,7 +16,7 @@ pytest = "^7.0"
 black = "^23.0"
 
 [tool.poetry.scripts]
-m4b-converter = "m4b_converter.cli.main:main"
+m4b-converter = "m4b_converter.__main__:main"
 
 [tool.poetry.group.dev.dependencies]
 bumpver = "^2024.1130"
