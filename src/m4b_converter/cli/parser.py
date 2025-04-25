@@ -44,4 +44,16 @@ def generate_parser():
     optimize_parser.add_argument("--keep-temp", action="store_true", help="No borrar archivos temporales")
     optimize_parser.add_argument("--threads", type=int, default=1, help="Hilos para FFmpeg")
 
+    # -------------------------------------------
+    # Subcomando: merge
+    # -------------------------------------------
+    merge_parser = subparsers.add_parser(
+        "merge", 
+        help="Fusionar archivos MP3"
+    )
+    merge_parser.add_argument("input_dir", help="Directorio con MP3s")
+    merge_parser.add_argument("-o", "--output-dir", default="output")
+    merge_parser.add_argument("--title", help="Título del audiolibro")
+    merge_parser.add_argument("--author", help="Autor del audiolibro")
+
     return parser
