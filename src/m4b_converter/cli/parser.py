@@ -55,5 +55,7 @@ def generate_parser():
     merge_parser.add_argument("-o", "--output-dir", default="output")
     merge_parser.add_argument("--title", help="Título del audiolibro")
     merge_parser.add_argument("--author", help="Autor del audiolibro")
+    merge_parser.add_argument("-m", "--metadata", type=str, help="Metadatos en formato 'key=value'")
+
 
     return parser
