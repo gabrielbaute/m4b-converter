@@ -1,11 +1,8 @@
 import os
-import logging
 from pathlib import Path
 from tempfile import NamedTemporaryFile
 import subprocess
 from typing import List, Optional, Dict
-
-logging.basicConfig(level=logging.INFO)
 
 class Mp3Merger:
     def __init__(self, input_path: str, output_dir: str = "output", temp_dir: str = "temp"):

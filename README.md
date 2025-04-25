@@ -25,7 +25,7 @@ Algunas de las características que planeo incluir más adelante:
 - Convertir de m4b a mp3 en caso de que el usuario lo desee.
 - Incorporar metadata de marcas de tiempo de los capítulos
 - Generar un .json con la metadata del audiolibro en formato de #Audiobookshelf
-- Unificar varios archivos mp3 en uno solo y convertir dicho archivo a m4b (si el usuario lo requiere)
+- ✅ Unificar varios archivos mp3 en uno solo y convertir dicho archivo a m4b (si el usuario lo requiere) (**Completada**)
 
 ## 💾 Instalación
 ```bash
@@ -49,6 +49,14 @@ m4b-converter optimize "libro.m4b" \
     --bitrate 48k \
     --channels 1 \
     --metadata "title=Edición Compacta"
+```
+
+### 3. Fusionar varios archivos mp3 en uno solo
+```bash
+m4b-converter merge "carpeta_audios/" \
+    --title "El Principito" \
+    --author "Saint-Exupéry" \
+    --output-dir "resultados/"
 ```
 
 ### 📌 Opciones comunes

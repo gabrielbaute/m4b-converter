@@ -1,13 +1,12 @@
 import sys
-from pathlib import Path
 from rich.console import Console
-from rich.progress import Progress, BarColumn, TimeRemainingColumn, TextColumn, TimeElapsedColumn
+from rich.progress import Progress, BarColumn, TextColumn, TimeElapsedColumn
 from rich.markdown import Markdown
 
 from m4b_converter.cli.parser import generate_parser
 from m4b_converter.cli.utils import parse_metadata, get_audio_duration, time_str_to_seconds, total_duration
 from m4b_converter.cli.version import show_version, __version__
-from m4b_converter.core import M4bConverter
+from m4b_converter.core import M4bConverter, Mp3Merger
 
 console = Console()
 
@@ -41,6 +40,16 @@ def main():
         temp_dir=args.temp_dir,
         metadata=metadata
     )
+
+    if args.command == "merge":
+        merger = Mp3Merger(args.input_dir, args.output_dir)
+        metadata = {}
+        if args.title:
+            metadata["title"] = args.title
+        if args.author:
+            metadata["artist"] = args.author
+        
+        merger.merge(metadata=metadata)
 
     # Barra de progreso común
     def progress_callback(time_str: str):

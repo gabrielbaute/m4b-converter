@@ -4,8 +4,6 @@ click==8.1.8
 colorama==0.4.6
 iniconfig==2.1.0
 lexid==2021.1006
-# Editable Git install with no remote (m4b-converter==0.2.0)
--e c:\users\gabri\documents\python\m4b-converter
 markdown-it-py==3.0.0
 mdurl==0.1.2
 mypy-extensions==1.0.0
