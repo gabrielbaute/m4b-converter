@@ -9,9 +9,9 @@ tag_scope = "global"
 "pyproject.toml" = [
     'version = "{version}"',
 ]
-"src/m4b_converter/__init__.py" = [
+"m4b_converter/__init__.py" = [
     '__version__ = "{version}"',
 ]
-"src/m4b_converter/cli/version.py" = [
+"m4b_converter/cli/version.py" = [
     '__version__ = "{version}"',
 ]
