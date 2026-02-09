@@ -1,20 +1,24 @@
-import os
-import subprocess
 import shutil
+import logging
+import subprocess
 from pathlib import Path
 from typing import Optional, Dict, Callable
+
+from m4b_converter.enums import Format, Bitrate, AudioProfile
+from m4b_converter.settings import AppSettings
 
 class M4bConverter:
     def __init__(
         self,
-        input_path: str,
-        output_dir: str = "output",
-        temp_dir: str = "temp",
+        input_path: Path,
+        output_dir: Path = AppSettings.OUTPUT_DIR,
+        temp_dir: Path = AppSettings.TEMP_DIR,
         metadata: Optional[Dict[str, str]] = None
     ):
-        self.input_path = Path(input_path)
-        self.output_dir = Path(output_dir)
-        self.temp_dir = Path(temp_dir)
+        self.logger = logging.getLogger(self.__class__.__name__)
+        self.input_path = input_path
+        self.output_dir = output_dir
+        self.temp_dir = temp_dir
         self.metadata = metadata or {}
 
         # Crear directorios si no existen
@@ -27,14 +31,19 @@ class M4bConverter:
         self.temp_path = self.temp_dir / self.output_filename
 
     def _generate_output_filename(self) -> str:
-        """Genera el nombre del archivo de salida basado en el input."""
-        return f"{self.input_path.stem}.m4b"
+        """
+        Genera el nombre del archivo de salida basado en el input.
+
+        Returns:
+            str: Nombre del archivo de salida.
+        """
+        return f"{self.input_path.stem}.{Format.M4B.value}"
 
     def _build_ffmpeg_command(
         self,
         output_path: Path,
-        bitrate: str = "64k",
-        audio_profile: str = "aac_low",
+        bitrate: Bitrate,
+        audio_profile: AudioProfile = AudioProfile.AAC_LOW,
         channels: int = 1,
         threads: int = 1
     ) -> list:
@@ -44,11 +53,12 @@ class M4bConverter:
             "-i", str(self.input_path),
             "-threads", str(threads),
             "-c:a", "aac",
-            "-profile:a", audio_profile,
-            "-b:a", bitrate,
+            "-profile:a", audio_profile.value,
+            "-b:a", bitrate.value,
             "-ac", str(channels),
             "-f", "mp4",
             "-vn",
+            #TODO Incluir la imagen de portada si viene en el archivo de origen
         ]
 
         # Añadir metadatos
@@ -65,7 +75,8 @@ class M4bConverter:
 
     def convert_to_m4b(
         self,
-        bitrate: str = "64k",
+        bitrate: Bitrate = Bitrate.B_64K,
+        audio_profile: AudioProfile = AudioProfile.AAC_LOW,
         channels: int = 1,
         threads: int = 1,
         progress_callback: Optional[Callable] = None,
@@ -82,6 +93,7 @@ class M4bConverter:
             command = self._build_ffmpeg_command(
                 output_path=self.temp_path,
                 bitrate=bitrate,
+                audio_profile=audio_profile,
                 channels=channels,
                 threads=threads
             )
