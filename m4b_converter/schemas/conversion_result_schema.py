@@ -12,7 +12,8 @@ class ConversionResult(BaseModel):
     size_final_bytes: int
     bitrate_final: str
     codec_final: str = "aac"
-    timestamp_end: datetime = Field(default_factory=datetime.now)
+    timestamp_start: datetime = Field(default_factory=datetime.now)
+    timestamp_end: datetime
 
     @computed_field
     @property
