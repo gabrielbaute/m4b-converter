@@ -1,5 +1,5 @@
 [bumpver]
-current_version = "0.3.1"
+current_version = "0.4.0"
 version_pattern = "MAJOR.MINOR.PATCH"
 commit_message = "bump version {old_version} -> {new_version}"
 tag_message = "{new_version}"
@@ -9,9 +9,6 @@ tag_scope = "global"
 "pyproject.toml" = [
     'version = "{version}"',
 ]
-"m4b_converter/__init__.py" = [
-    '__version__ = "{version}"',
-]
-"m4b_converter/cli/version.py" = [
+"m4b_converter/settings/app_settings.py" = [
     '__version__ = "{version}"',
 ]
