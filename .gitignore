@@ -6,7 +6,9 @@ temp/
 testing/
 output/
 test.py
-.m4b
+*.m4a
+*.m4b
+*.mp3
 
 # python
 __pycache__/
