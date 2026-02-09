@@ -1,61 +1,64 @@
-import argparse
-from m4b_converter.cli.version import __version__
+from pathlib import Path
+from argparse import ArgumentParser
 
-def generate_parser():
-    # Parser principal
-    parser = argparse.ArgumentParser(
-        description="📖 Conversor y optimizador de audios a M4B.",
-        formatter_class=argparse.ArgumentDefaultsHelpFormatter
-    )
-    parser.add_argument("-v", "--version", action="store_true", help="Mostrar versión y salir")
+from m4b_converter.enums import Bitrate
+
+def create_parser() -> ArgumentParser:
+    """
+    Parser de comandos de entrada.
+
+    Returns:
+        ArgumentParser: Objeto ArgumentParser.
+    """
+    parser = ArgumentParser(
+        prog="M4B Converter",
+        usage="Convierte tus archivos de audiolibro",
+        description="Convierte archivos de audiolibro a m4b más optimizados",
+        add_help=True,
+        allow_abbrev=True,
+        exit_on_error=True
+        )
     
-    # Subcomandos: convert, optimize, merge
-    subparsers = parser.add_subparsers(dest="command", required=False, help="Comandos disponibles")
+    subparsers = parser.add_subparsers(dest="command", help="Commands available")
+    
+    # -------------------------------------------
+    # Subcommand: version
+    # -------------------------------------------
+    subparsers.add_parser("version", help="Shows CLI version")
 
     # -------------------------------------------
-    # Subcomando: convert
+    # Subcommand: analyze
     # -------------------------------------------
-    convert_parser = subparsers.add_parser(
-        "convert",
-        help="Convertir un archivo de audio a M4B"
-    )
-    convert_parser.add_argument("input", type=str, help="Ruta del archivo de entrada (MP3, WAV, etc.)")
-    convert_parser.add_argument("-o", "--output-dir", type=str, default="output", help="Directorio de salida")
-    convert_parser.add_argument("-t", "--temp-dir", type=str, default="temp", help="Directorio para archivos temporales")
-    convert_parser.add_argument("-b", "--bitrate", type=str, default="64k", help="Bitrate (ej: 64k, 128k)")
-    convert_parser.add_argument("-c", "--channels", type=int, default=1, help="Número de canales (1=mono, 2=estéreo)")
-    convert_parser.add_argument("-m", "--metadata", type=str, help="Metadatos en formato 'title=Mi Libro,author=Autor'")
-    convert_parser.add_argument("--keep-temp", action="store_true", help="No borrar archivos temporales")
-    convert_parser.add_argument("--threads", type=int, default=1, help="Hilos para FFmpeg")
+    analyze_parser = subparsers.add_parser("analyze", help="Analyze an audiobook file")
+    analyze_parser.add_argument("file", type=str, help="Path to the video file to analyze")
+    
+    # -------------------------------------------
+    # Subcommand: convert
+    # -------------------------------------------
+    convert_parser = subparsers.add_parser("convert", help="Convert an audiobook file")
+    convert_parser.add_argument("input", type=Path, help="Ruta al archivo de audio")
+    convert_parser.add_argument("--bitrate", type=str, default="64k", choices=[b.value for b in Bitrate])
+    convert_parser.add_argument("--channels", type=int, default=1, choices=[1, 2])
+    convert_parser.add_argument("--output-dir", type=str, default=None, help="Directorio de salida para la conversión")
 
     # -------------------------------------------
-    # Subcomando: optimize
+    # Subcommand: cover
     # -------------------------------------------
-    optimize_parser = subparsers.add_parser(
-        "optimize",
-        help="Optimizar un archivo M4B existente (reducir bitrate, canales, etc.)"
-    )
-    optimize_parser.add_argument("input", type=str, help="Ruta del archivo M4B a optimizar")
-    optimize_parser.add_argument("-o", "--output-dir", type=str, default="output", help="Directorio de salida")
-    optimize_parser.add_argument("-t", "--temp-dir", type=str, default="temp", help="Directorio para archivos temporales")
-    optimize_parser.add_argument("-b", "--bitrate", type=str, default="64k", help="Bitrate objetivo (ej: 32k, 64k)")
-    optimize_parser.add_argument("-c", "--channels", type=int, default=1, help="Canales de salida (1=mono, 2=estéreo)")
-    optimize_parser.add_argument("-m", "--metadata", type=str, help="Metadatos actualizados 'title=Nuevo Título'")
-    optimize_parser.add_argument("--keep-temp", action="store_true", help="No borrar archivos temporales")
-    optimize_parser.add_argument("--threads", type=int, default=1, help="Hilos para FFmpeg")
+    cover_parser = subparsers.add_parser("cover", help="Extract cover from an audiobook file")
+    cover_parser.add_argument("file", type=str, help="Path to the video file to analyze")
 
     # -------------------------------------------
-    # Subcomando: merge
+    # Subcommand: batch
     # -------------------------------------------
-    merge_parser = subparsers.add_parser(
-        "merge", 
-        help="Fusionar archivos MP3"
-    )
-    merge_parser.add_argument("input_dir", help="Directorio con MP3s")
-    merge_parser.add_argument("-o", "--output-dir", default="output")
-    merge_parser.add_argument("--title", help="Título del audiolibro")
-    merge_parser.add_argument("--author", help="Autor del audiolibro")
-    merge_parser.add_argument("-m", "--metadata", type=str, help="Metadatos en formato 'key=value'")
+    batch_parser = subparsers.add_parser("batch", help="Convert a directory of audiobooks")
+    batch_parser.add_argument("input_dir", type=str, help="Directorio con archivos de audio")
+    batch_parser.add_argument("--bitrate", type=str, default="64k", choices=[b.value for b in Bitrate])
+    batch_parser.add_argument("--channels", type=int, default=1, choices=[1, 2])
+    batch_parser.add_argument("--output-dir", type=str, default=None, help="Directorio de salida para la conversión")
 
-
+    # -------------------------------------------
+    # Subcommand: clean
+    # -------------------------------------------
+    subparsers.add_parser("clean", help="Clean the app directories")
+    
     return parser
