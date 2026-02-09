@@ -8,9 +8,7 @@ from m4b_converter.enums import Bitrate
 from m4b_converter.managers import WorkflowManager
 from m4b_converter.cli.utils import convert_bytes_to_mb
 
-console = Console()
-
-def handle_batch(args: Namespace):
+def handle_batch(args: Namespace, console: Console):
     manager = WorkflowManager()
     input_dir = Path(args.input_dir)
     
