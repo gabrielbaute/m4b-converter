@@ -1,6 +1,7 @@
 import subprocess
 import logging
 from pathlib import Path
+from datetime import datetime
 from typing import Optional, Callable
 
 from m4b_converter.settings import AppSettings
@@ -84,11 +85,12 @@ class M4bConverterService:
         bitrate: Bitrate = Bitrate.B_64K,
         channels: int = 1,
         cover_path: Optional[Path] = None,
-        progress_callback: Optional[Callable[[float], None]] = None
+        progress_callback: Optional[Callable[[float], None]] = None,
+        task: Optional[ConversionTask] = None
     ) -> ConversionResult:
         
         # 1. Crear la tarea
-        self.current_task = ConversionTask(
+        self.current_task = task or ConversionTask(
             input_path=self.audio_info.path,
             bitrate_target=bitrate.value,
             channels_target=channels
@@ -104,6 +106,9 @@ class M4bConverterService:
         self.logger.info(f"Iniciando conversión ID: {self.current_task.id}")
 
         try:
+            # Definimos el tiempo de inicio de la tarea
+            timestamp_start = datetime.now()
+            
             # Ejecución con captura de progreso
             process = subprocess.Popen(
                 cmd, stderr=subprocess.PIPE, universal_newlines=True, encoding="utf-8"
@@ -130,7 +135,9 @@ class M4bConverterService:
                 duration_seconds=self.audio_info.duration_seconds,
                 size_original_bytes=self.audio_info.size_bytes,
                 size_final_bytes=output_path.stat().st_size,
-                bitrate_final=bitrate.value
+                bitrate_final=bitrate.value,
+                timestamp_start=timestamp_start,
+                timestamp_end=datetime.now()
             )
 
         except Exception as e:
