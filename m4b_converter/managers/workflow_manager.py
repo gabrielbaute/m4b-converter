@@ -1,10 +1,11 @@
+import uuid
 import shutil
 import logging
 from pathlib import Path
 from typing import Optional, Callable, List, Dict
 
 from m4b_converter.services import AudioAnalyzerService, ExtractCoverService, M4bConverterService
-from m4b_converter.schemas import ConversionResult
+from m4b_converter.schemas import ConversionResult, ConversionTask
 from m4b_converter.enums import Bitrate, Format
 from m4b_converter.settings import AppSettings
 
@@ -34,7 +35,15 @@ class WorkflowManager:
             progress_callback(Optional[Callable[[float], None]]): Callback de progreso.
         """
         output_dir.mkdir(parents=True, exist_ok=True)
-        self.logger.info(f"--- Iniciando procesamiento: {input_path.name} ---")
+        # 0. Creamos la tarea aquí (El "Ticket" de seguimiento)
+        task = ConversionTask(
+            id=uuid.uuid4(),
+            input_path=input_path,
+            bitrate_target=bitrate.value,
+            channels_target=channels
+        )
+        
+        self.logger.info(f"--- [TASK {task.id}] Procesando: {input_path.name} ---")
         
         try:
             # 1. Analizar el archivo
@@ -59,7 +68,8 @@ class WorkflowManager:
                 bitrate=bitrate,
                 channels=channels,
                 cover_path=temp_cover_path,
-                progress_callback=progress_callback
+                progress_callback=progress_callback,
+                task=task
             )
 
             # 4. Persistencia y Limpieza de Portada
