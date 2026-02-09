@@ -1,2 +1,3 @@
 from m4b_converter.services.audio_analyzer_service import AudioAnalyzerService
 from m4b_converter.services.extract_cover_service import ExtractCoverService
+from m4b_converter.services.m4b_converter_service import M4bConverterService
