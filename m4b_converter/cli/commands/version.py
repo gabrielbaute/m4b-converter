@@ -30,6 +30,6 @@ def show_version(console: Console) -> None:
     table.add_row("Versión", f"[bold]{AppSettings.VERSION}[/bold]")
     table.add_row("Author", "Gabriel Baute")
     table.add_row("License", "MIT")
-    table.add_row("Repo", "https://github.com/gabrielbaute/m4b_converter")
+    table.add_row("Repo", "https://github.com/gabrielbaute/m4b-converter")
 
     console.print(table)
