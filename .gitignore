@@ -13,3 +13,6 @@ test.py
 # python
 __pycache__/
 *.pyc
+
+# compilado
+dist/
