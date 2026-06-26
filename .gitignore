@@ -1,5 +1,7 @@
 # virtual environment
 venv/
+.venv/
+.env
 
 # project files
 temp/
@@ -14,5 +16,6 @@ test.py
 __pycache__/
 *.pyc
 
-# compilado
+# Build
+*.egg-info
 dist/
