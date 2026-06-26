@@ -1,12 +1,17 @@
 [project]
 name = "m4b-converter"
 version = "0.1.0"
-description = "Add your description here"
+description = "Una CLI en python para convertir tus archivos de audiolibros a m4b."
 readme = "README.md"
 requires-python = ">=3.14"
 dependencies = [
+    "flet>=0.80.5",
     "pydantic>=2.12.5",
+    "rich>=14.3.2",
 ]
+
+[project.scripts]
+m4b = "m4b_converter.__main__:main"
 
 [dependency-groups]
 dev = [
