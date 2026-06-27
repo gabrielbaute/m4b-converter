@@ -20,6 +20,10 @@ __pycache__/
 *.egg-info
 dist/
 
-# repomix
+# Repomix
 m4b_converter.egg-info
 repomix-output.xml
+
+# Docs
+site/
+docs/site/
