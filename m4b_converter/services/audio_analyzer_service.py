@@ -2,7 +2,7 @@ import json
 import logging
 import subprocess
 from pathlib import Path
-from typing import List, Dict, Optional
+from typing import List, Dict, Optional, Any
 
 from m4b_converter.schemas import AudioFileSchema
 
@@ -139,7 +139,7 @@ class AudioAnalyzerService:
             return None
 
     @property
-    def raw_data(self):
+    def raw_data(self) -> Dict[str, Any]:
         """
         Obtiene los datos crudos del archivo de audio analizado.
 
