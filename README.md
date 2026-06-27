@@ -38,17 +38,18 @@ poetry install  # o pip install .
 
 ### 1. Convertir un archivo a M4B
 ```bash
-m4b-converter convert "audio.mp3" \
-    --bitrate 64k \
-    --metadata "title=El Principito,author=Saint-Exupéry"
+m4b-converter convert
+    --bitrate 128k \
+    --channels 2 \
+    --output-dir .\
+    "audio.mp3"
 ```
 
 ### 2. Optimizar un M4B existente
 ```bash
 m4b-converter optimize "libro.m4b" \
-    --bitrate 48k \
+    --bitrate 64k \
     --channels 1 \
-    --metadata "title=Edición Compacta"
 ```
 
 ### 3. Fusionar varios archivos mp3 en uno solo
@@ -65,8 +66,7 @@ m4b-converter merge "carpeta_audios/" \
 | `-b, --bitrate`    | Calidad de audio (bitrate)               | `64k`, `128k`         |
 | `-c, --channels`   | Canales (`1`=mono, `2`=estéreo)          | `1` (voz), `2` (música)|
 | `-o, --output-dir` | Directorio de salida                     | `./output`            |
-| `-m, --metadata`   | Metadatos en `key=value`                 | `title=Mi Libro`      |
 
 
 ## 📄 Licencia
-MIT © [Gabriel Baute](https://github.com/gabrielbaute)
+MIT © [Gabriel Baute](https://github.com/gabrielbaute/m4b-converter/LICENSE)
