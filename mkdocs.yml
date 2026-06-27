@@ -1,0 +1,63 @@
+site_name: M4B Converter
+site_description: Conversor de audiolibros a formato M4B optimizado
+site_author: Gabriel Baute
+site_url: https://github.com/gabrielbaute/m4b-converter
+
+# Repositorio
+repo_name: gabrielbaute/m4b-converter
+repo_url: https://github.com/gabrielbaute/m4b-converter
+
+theme:
+  name: readthedocs
+
+# Extensión de Markdown
+markdown_extensions:
+  - admonition
+  - footnotes
+  - tables
+  - attr_list
+  - md_in_html
+  - toc:
+      permalink: true
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences
+
+# Plugins
+plugins:
+  - search
+  - mkdocstrings:
+      default_handler: python
+      handlers:
+        python:
+          paths: [.]
+          options:
+            docstring_style: google
+            show_source: true
+            show_root_heading: true
+            show_category_heading: true
+            heading_level: 2
+            members_order: source
+            show_submodules: true
+            show_if_no_docstring: false
+            filters: ["!^_", "!^__"]
+
+# Navegación del sitio
+nav:
+  - Inicio: index.md
+  - Guía de Usuario:
+      - Instalación: guide/installation.md
+      - Uso Básico: guide/usage.md
+      - Comandos CLI: guide/commands.md
+      - Ejemplos: guide/examples.md
+  - Referencia API:
+      - Enumeraciones: api/enums.md
+      - Esquemas: api/schemas.md
+      - Servicios: api/services.md
+      - Gestores: api/managers.md
+      - Configuración: api/settings.md
+  - Desarrollo:
+      - Contribuir: development/contributing.md
+      - Licencia: development/license.md
