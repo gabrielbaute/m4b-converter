@@ -1,10 +1,20 @@
 from pathlib import Path
 
-__version__ = "1.0.0"
+__version__ = "1.1.0"
 
 class AppSettings:
     """
-    Configuración de la aplicación.
+    Configuración de la aplicación M4B Converter.
+
+    Esta clase maneja la configuración global de la aplicación, incluyendo el nombre, versión y estructura de directorios necesarios para el funcionamiento del conversor de audiolibros a formato M4B.
+
+    Attributes:
+        NAME (str): Nombre de la aplicación.
+        VERSION (str): Versión actual de la aplicación.
+        APP_DIR (Path): Directorio raíz de la aplicación en el home del usuario.
+        TEMP_DIR (Path): Directorio para archivos temporales durante la conversión.
+        OUTPUT_DIR (Path): Directorio donde se guardan los archivos M4B convertidos.
+        LOGS_DIR (Path): Directorio para almacenar los archivos de registro (logs).
     """
     # Datos de la app
     NAME: str = "M4B Converter"
