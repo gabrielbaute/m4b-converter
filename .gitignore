@@ -19,3 +19,7 @@ __pycache__/
 # Build
 *.egg-info
 dist/
+
+# repomix
+m4b_converter.egg-info
+repomix-output.xml
