@@ -62,7 +62,14 @@ class AudioAnalyzerService:
             str(self.file_path)
         ]
         try:
-            result = subprocess.run(cmd, capture_output=True, text=True, check=True)
+            result = subprocess.run(
+                cmd, 
+                capture_output=True, 
+                text=True, 
+                encoding="utf-8",
+                errors="replace",
+                check=True
+            )
             return json.loads(result.stdout)
         except (subprocess.CalledProcessError, json.JSONDecodeError) as e:
             self.logger.error(f"Error analizando archivo: {e}")
