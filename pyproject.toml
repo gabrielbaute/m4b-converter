@@ -13,6 +13,13 @@ dependencies = [
 [project.scripts]
 m4b = "m4b_converter.__main__:main"
 
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+include = ["m4b_converter*"]
+
 [dependency-groups]
 dev = [
     "bumpver>=2025.1131",
